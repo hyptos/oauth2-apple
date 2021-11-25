@@ -6,6 +6,7 @@ use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
 use GuzzleHttp\ClientInterface;
 use InvalidArgumentException;
+use Firebase\JWT\Key;
 
 class AppleAccessToken extends AccessToken
 {
@@ -45,7 +46,7 @@ class AppleAccessToken extends AccessToken
             $last = end($keys);
             foreach ($keys as $key) {
                 try {
-                    $decoded = JWT::decode($options['id_token'], $key, ['RS256']);
+                    $decoded = JWT::decode($options['id_token'], new Key($key, 'RS256'));
                     break;
                 } catch (\Exception $exception) {
                     if ($last === $key) {
